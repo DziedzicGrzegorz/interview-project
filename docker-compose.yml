@@ -1,0 +1,50 @@
+version: "3"
+services:
+  db:
+    container_name: database
+    env_file:
+        - .env
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - interview-network
+  backend:
+    env_file:
+      - .env
+    build: backend
+    container_name: backend
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SESSION_JDBC_INITIALIZE_SCHEMA: always
+
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - interview-network
+  frontend:
+    build: frontend
+    container_name: frontend
+    ports:
+      - "4173:4173"
+    restart: always
+    networks:
+      - interview-network
+volumes:
+  pgdata:
+networks:
+  interview-network:
+    driver: bridge
