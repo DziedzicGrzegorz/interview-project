@@ -7,6 +7,7 @@ import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class AuthController {
     private final Bucket bucket;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto requestBody, HttpServletResponse response) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserDto requestBody, HttpServletResponse response) {
         if (consumeTokenFromBucket()) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Rate limit exceeded. Try again later.");
         }
@@ -32,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         if (consumeTokenFromBucket()) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Rate limit exceeded. Try again later.");
         }
