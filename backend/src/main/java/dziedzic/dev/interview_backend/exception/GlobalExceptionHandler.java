@@ -1,6 +1,8 @@
 package dziedzic.dev.interview_backend.exception;
 
-import dziedzic.dev.interview_backend.exception.CustomExceptions.*;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.AccessDeniedException;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.UserAlreadyExistsException;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -71,6 +73,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> UserNotFoundException(UserNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, String>> handleCustomAuthorizationException(AccessDeniedException ex) {
+        // You can create a more detailed API error response object if needed
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("message", ex.getMessage()));
     }
 }
