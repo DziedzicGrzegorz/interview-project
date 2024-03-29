@@ -1,7 +1,6 @@
-package dziedzic.dev.interview_backend.auth.exception;
+package dziedzic.dev.interview_backend.exception;
 
-import dziedzic.dev.interview_backend.auth.exception.CustomExceptions.UserAlreadyExistsException;
-import dziedzic.dev.interview_backend.auth.exception.CustomExceptions.UserNotFoundException;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

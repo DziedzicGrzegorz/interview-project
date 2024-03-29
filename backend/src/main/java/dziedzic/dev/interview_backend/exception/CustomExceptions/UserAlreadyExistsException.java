@@ -1,4 +1,4 @@
-package dziedzic.dev.interview_backend.auth.exception.CustomExceptions;
+package dziedzic.dev.interview_backend.exception.CustomExceptions;
 
 public class UserAlreadyExistsException extends RuntimeException {
     public UserAlreadyExistsException(String message) {
