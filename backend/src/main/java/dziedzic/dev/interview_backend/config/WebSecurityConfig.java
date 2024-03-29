@@ -42,6 +42,10 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .httpBasic(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider)
+                .exceptionHandling(exc -> exc
+                        .authenticationEntryPoint((req, res, e) -> res.sendError(401))
+                        .accessDeniedHandler((req, res, e) -> res.sendError(403))
+                )
                 .build();
     }
 
