@@ -43,9 +43,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String username = jwtUtils.extractUsername(accessToken);
 
             if (username == null) {
+                filterChain.doFilter(request, response);
                 throw new ServletException("Invalid access token");
             }
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
+                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -63,16 +65,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             boolean isRefreshExpired = jwtUtils.isTokenExpired(refreshToken);
 
             if (refreshToken == null || refreshToken.isEmpty() || isRefreshExpired) {
+                filterChain.doFilter(request, response);
                 return;
             }
 
             String username = jwtUtils.extractUsername(refreshToken);
 
             if (username == null) {
+                filterChain.doFilter(request, response);
                 throw new ServletException("Invalid refresh token");
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
+                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -81,6 +86,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             boolean isRefreshTokenValid = tokenService.isTokenValidAndUnrevoked(refreshToken);
 
             if (!isRefreshTokenValid || !jwtUtils.isTokenUnexpiredAndMatchingUser(refreshToken, userDetails)) {
+                filterChain.doFilter(request, response);
                 return;
             }
 

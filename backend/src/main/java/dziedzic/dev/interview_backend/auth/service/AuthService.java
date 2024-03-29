@@ -53,6 +53,7 @@ public class AuthService {
         User user = loadUserByUsernameOrEmail(request.getUsername(), request.getEmail());
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
+        //@TODO only one user can be logged in at the same time
         revokeAndDeleteAllUserTokens(user);
 
         attachTokensToResponse(user, response);
