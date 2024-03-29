@@ -9,6 +9,8 @@ import dziedzic.dev.interview_backend.cypher.service.CypherService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,23 +23,28 @@ public class MessageController {
     private final CypherService cypherService;
 
     @GetMapping
-    public List<EncryptedMessage> getAllMessages(HttpServletRequest request) {
-        List<Message> temp = cypherService.getAllMessages(request);
-        return temp.stream().map(EncryptedMessage::new).toList();
+    public ResponseEntity<List<EncryptedMessage>> getAllMessages(HttpServletRequest request) {
+        List<Message> messages = cypherService.getAllMessages(request);
+        List<EncryptedMessage> encryptedMessages = messages.stream().map(EncryptedMessage::new).toList();
+        return ResponseEntity.ok(encryptedMessages);
     }
 
     @GetMapping("/{id}")
-    public EncryptedMessage getMessageById(@PathVariable("id") UUID id, HttpServletRequest request) {
-        return new EncryptedMessage(cypherService.getMessageById(id, request));
+    public ResponseEntity<EncryptedMessage> getMessageById(@PathVariable("id") UUID id, HttpServletRequest request) {
+        Message message = cypherService.getMessageById(id, request);
+        EncryptedMessage encryptedMessage = new EncryptedMessage(message);
+        return ResponseEntity.ok(encryptedMessage);
     }
 
     @PostMapping("/encrypt")
-    public EncryptedMessage encrypt(@Valid @RequestBody ToEncryptMessageRequest requestBody, HttpServletRequest request) {
-        return cypherService.encryptAndSaveMessage(requestBody, request);
+    public ResponseEntity<EncryptedMessage> encrypt(@Valid @RequestBody ToEncryptMessageRequest requestBody, HttpServletRequest request) {
+        EncryptedMessage encryptedMessage = cypherService.encryptAndSaveMessage(requestBody, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(encryptedMessage);
     }
 
     @PostMapping("/decrypt")
-    public DecryptedMessage decrypt(@Valid @RequestBody EncryptedMessageRequest requestBody) {
-        return cypherService.decryptAndUpdateMessage(requestBody);
+    public ResponseEntity<DecryptedMessage> decrypt(@Valid @RequestBody EncryptedMessageRequest requestBody) {
+        DecryptedMessage decryptedMessage = cypherService.decryptAndUpdateMessage(requestBody);
+        return ResponseEntity.ok(decryptedMessage);
     }
 }
