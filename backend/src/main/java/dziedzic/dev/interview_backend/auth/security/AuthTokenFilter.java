@@ -1,7 +1,5 @@
 package dziedzic.dev.interview_backend.auth.security;
 
-import dziedzic.dev.interview_backend.auth.repository.TokenRepository;
-import dziedzic.dev.interview_backend.auth.repository.UserRepository;
 import dziedzic.dev.interview_backend.auth.service.AuthService;
 import dziedzic.dev.interview_backend.auth.service.TokenService;
 import jakarta.servlet.FilterChain;
@@ -47,9 +45,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (username == null) {
                 throw new ServletException("Invalid access token");
             }
-
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                filterChain.doFilter(request, response);
+                return;
             }
 
             //@TODO if database droped but user has tokens then then it will throw exception user not found
@@ -58,7 +55,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             boolean isTokenValid = tokenService.isTokenValidAndUnrevoked(accessToken);
 
             if (isTokenValid && jwtUtils.isTokenUnexpiredAndMatchingUser(accessToken, userDetails)) {
-
                 AuthService.authenticateUser(userDetails, request);
             }
 
@@ -67,7 +63,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             boolean isRefreshExpired = jwtUtils.isTokenExpired(refreshToken);
 
             if (refreshToken == null || refreshToken.isEmpty() || isRefreshExpired) {
-                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -78,7 +73,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
 
             if (SecurityContextHolder.getContext().getAuthentication() != null) {
-                filterChain.doFilter(request, response);
+                return;
             }
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -86,7 +81,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             boolean isRefreshTokenValid = tokenService.isTokenValidAndUnrevoked(refreshToken);
 
             if (!isRefreshTokenValid || !jwtUtils.isTokenUnexpiredAndMatchingUser(refreshToken, userDetails)) {
-                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -98,5 +92,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().equals("/auth/login") || request.getServletPath().equals("/auth/register");
     }
 }

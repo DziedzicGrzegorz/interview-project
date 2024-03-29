@@ -1,10 +1,13 @@
 package dziedzic.dev.interview_backend.auth.service;
 
 import dziedzic.dev.interview_backend.auth.dto.UserDto;
-import dziedzic.dev.interview_backend.auth.exception.CustomExceptions.UserAlreadyExistsException;
-import dziedzic.dev.interview_backend.auth.exception.CustomExceptions.UserNotFoundException;
 import dziedzic.dev.interview_backend.auth.model.User;
 import dziedzic.dev.interview_backend.auth.repository.UserRepository;
+import dziedzic.dev.interview_backend.auth.security.CookieUtils;
+import dziedzic.dev.interview_backend.auth.security.JWTUtils;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.UserAlreadyExistsException;
+import dziedzic.dev.interview_backend.exception.CustomExceptions.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +26,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTUtils jwtUtils;
 
     public List<UserDto> getUsers() {
         return userRepository.findAll().stream().map(UserDto::new).toList();
@@ -71,5 +75,24 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
+    }
+
+    /**
+     * Get user by request or null if not found
+     * This method was created to get user from cookies
+     * and return null if user is not found
+     * The main purpose of this method is to get user from access token
+     * but if access token expire then we regenerate and attach him in authFilter but this request cookies are not updated, so we need to get user from refresh token
+     */
+    public User getUserByRequestOrNull(HttpServletRequest request) {
+        String token = CookieUtils.getTokenFromCookies(request, "access_token");
+        token = token == null ? CookieUtils.getTokenFromCookies(request, "refresh_token") : token;
+
+        try {
+            String username = jwtUtils.extractUsername(token);
+            return getByUsername(username);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
