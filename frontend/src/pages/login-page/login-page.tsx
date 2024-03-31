@@ -15,7 +15,7 @@ import {
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
 
-function App() {
+function LoginPage() {
     const [open, setOpen] = React.useState(false)
 
     return (
@@ -59,4 +59,4 @@ function ProfileForm({className}: React.ComponentProps<"form">) {
     )
 }
 
-export default App
+export default LoginPage
