@@ -4,9 +4,10 @@ import {ModeToggle} from "@/components/mode-toogle.tsx";
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import {LoginPage} from "@/pages/login-page/login-page.tsx";
 import {RequireAuth} from "@/components/auth/RequireAuth.tsx";
-import {Protected} from "@/pages/protected.tsx";
+import {Dashboard} from "@/pages/dashboard.tsx";
 import {SwitchDemo} from "@/pages/not-found.tsx";
 import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
+import {Toaster} from "@/components/ui/toaster.tsx";
 
 const router = createBrowserRouter([
     {
@@ -15,13 +16,18 @@ const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <LoginPage/>,
+        element: (
+            <>
+                <LoginPage/>
+                <Toaster/>
+            </>
+        )
     },
     {
         path: "/dashboard",
         element: (
             <RequireAuth>
-                <Protected/>
+                <Dashboard/>
             </RequireAuth>
         ),
     },
