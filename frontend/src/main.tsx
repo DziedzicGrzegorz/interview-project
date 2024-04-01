@@ -1,19 +1,33 @@
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
-import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {ModeToggle} from "@/components/mode-toogle.tsx";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import LoginPage from "@/pages/login-page/login-page.tsx";
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {LoginPage} from "@/pages/login-page/login-page.tsx";
+import {RequireAuth} from "@/components/auth/RequireAuth.tsx";
+import {Protected} from "@/pages/protected.tsx";
+import {SwitchDemo} from "@/pages/not-found.tsx";
+import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
+        element: <Navigate to="/login" replace/>,
+    },
+    {
+        path: "/login",
         element: <LoginPage/>,
     },
     {
         path: "/dashboard",
-        element: <App/>,
+        element: (
+            <RequireAuth>
+                <Protected/>
+            </RequireAuth>
+        ),
+    },
+    {
+        path: "*",
+        element: <SwitchDemo/>,
     },
 ]);
 
