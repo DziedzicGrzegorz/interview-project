@@ -1,6 +1,5 @@
 import React from 'react'
 import {cn} from "@/lib/utils"
-import {Button} from "@/components/ui/button"
 
 import {
     Drawer,
@@ -14,6 +13,7 @@ import {
 } from "@/components/ui/drawer"
 import {Input} from "@/components/ui/input"
 import {Label} from "@/components/ui/label"
+import {Button} from "@/components/ui/button/button.tsx";
 
 function App() {
     const [open, setOpen] = React.useState(false)

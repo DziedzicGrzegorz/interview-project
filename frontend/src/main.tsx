@@ -1,19 +1,39 @@
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 import './index.css'
-import {ThemeProvider} from "@/components/theme-provider.tsx";
 import {ModeToggle} from "@/components/mode-toogle.tsx";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import LoginPage from "@/pages/login-page/login-page.tsx";
+import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {LoginPage} from "@/pages/login-page/login-page.tsx";
+import {RequireAuth} from "@/components/auth/RequireAuth.tsx";
+import {Dashboard} from "@/pages/dashboard.tsx";
+import {SwitchDemo} from "@/pages/not-found.tsx";
+import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
+import {Toaster} from "@/components/ui/toaster.tsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <LoginPage/>,
+        element: <Navigate to="/login" replace/>,
+    },
+    {
+        path: "/login",
+        element: (
+            <>
+                <LoginPage/>
+                <Toaster/>
+            </>
+        )
     },
     {
         path: "/dashboard",
-        element: <App/>,
+        element: (
+            <RequireAuth>
+                <Dashboard/>
+            </RequireAuth>
+        ),
+    },
+    {
+        path: "*",
+        element: <SwitchDemo/>,
     },
 ]);
 
