@@ -16,20 +16,22 @@ Projekt zakłada stworzenie aplikacji webowej umożliwiającej szyfrowanie i des
 
 ## konfiguracją parametrów środowiskowych
 W celu uzupełnienia kluczy i haseł należy utworzyć plik `application.properties` w folderze `backend/src/main/resources` i dodać do niego następujące linie:
+
 ```properties
 spring.application.name=
 spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=update
-spring.session.jdbc.initialize-schema=always
+jwt.secret=
 ```
 oraz .env
 ```properties
-spring.datasource.username=
-spring.datasource.password=
-#Generate JWS, base64 required https://8gwifi.org/jwsgen.jsp
-jwt.secret=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+SPRING_DATASOURCE_URL=
+SPRING_DATASOURCE_USERNAME=
+SPRING_DATASOURCE_PASSWORD=
 ```
 
 ## Uruchomienie
@@ -37,3 +39,11 @@ jwt.secret=
 docker-compose up --build
 
 ```
+
+## Porty
+Serwisy działają na następujących portach 
+
+- Frontend: http://localhost:4173
+- Backend: http://localhost:8080
+- Baza danych: http://localhost:5432
+
