@@ -26,12 +26,10 @@ spring.session.jdbc.initialize-schema=always
 ```
 oraz .env
 ```properties
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_DB=
-SPRING_DATASOURCE_URL=
-SPRING_DATASOURCE_USERNAME=
-SPRING_DATASOURCE_PASSWORD=
+spring.datasource.username=
+spring.datasource.password=
+#Generate JWS, base64 required https://8gwifi.org/jwsgen.jsp
+jwt.secret=
 ```
 
 ## Uruchomienie
