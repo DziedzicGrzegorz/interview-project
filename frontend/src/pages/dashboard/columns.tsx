@@ -108,8 +108,8 @@ export function columnsWrapper({
                 },
                 cell: ({row}) => {
                     const messageIdentifier = row.getValue("messageIdentifier") as string;
-                    const isTruncated = messageIdentifier.length > 15;
-                    const displayText = isTruncated ? `${messageIdentifier.slice(0, 15)}...` : messageIdentifier;
+                    const isTruncated = messageIdentifier.length > 10;
+                    const displayText = isTruncated ? `${messageIdentifier.slice(0, 10)}...` : messageIdentifier;
 
                     return (
                         <div>
@@ -118,7 +118,7 @@ export function columnsWrapper({
                                     <HoverCardTrigger asChild>
                                         <button>{displayText}</button>
                                     </HoverCardTrigger>
-                                    <HoverCardContent className='w-80'>
+                                    <HoverCardContent className='w-80 overflow-auto'>
                                         <div className='flex justify-between space-x-4'>
                                             <div className='space-y-1'>
                                                 <h4 className='text-sm font-semibold'>Description</h4>
