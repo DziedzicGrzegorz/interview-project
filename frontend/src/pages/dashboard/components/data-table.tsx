@@ -41,6 +41,7 @@ export function DataTable<TData, TValue>({columns, data,}: DataTableProps<TData,
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const media = useMediaQuery("(min-width: 1024px)")
     const smallMedia = useMediaQuery("(min-width: 768px)")
+    const smallMedia2 = useMediaQuery("(min-width: 640px)")
 
 
     const table = useReactTable({
@@ -64,8 +65,9 @@ export function DataTable<TData, TValue>({columns, data,}: DataTableProps<TData,
     useEffect(() => {
         table.getColumn('decrypted')!.toggleVisibility(media)
         table.getColumn('createdDateTime')!.toggleVisibility(smallMedia)
+        table.getColumn('id')!.toggleVisibility(smallMedia2)
 
-    }, [media, smallMedia, table]);
+    }, [media, smallMedia, table,smallMedia2]);
     return (
         <>
             <div className="w-[85%] flex justify-between items-center space-x-4 mx-auto py-5">

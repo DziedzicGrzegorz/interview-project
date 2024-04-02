@@ -32,6 +32,7 @@ export function ShowDecryptedMessage({
                 <AlertDialogHeader>
                     <AlertDialogTitle>Your Decrypted Message</AlertDialogTitle>
                     <AlertDialogDescription
+                        className="break-words  max-h-96 w-96"
                     >
                         {decryptedMessage?.message}
                     </AlertDialogDescription>
