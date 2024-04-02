@@ -12,9 +12,9 @@ import {TextGenerateEffect} from "@/components/text-generator-effect.tsx";
 import {useState} from "react";
 
 const encryptRequestSchema = z.object({
-    message: z.string().min(1, "Message is required").max(255, "Message must be at most 255 characters"),
-    password: z.string().min(6, "Password must be at least 6 characters").max(255, "Encryption password must be at most 255 characters"),
-    messageIdentifier: z.string().min(1, "Message identifier is required").max(255, "Message identifier must be at most 255 characters"),
+    message: z.string().min(1, "Message is required").max(140, "Message must be at most 140 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters").max(140, "Encryption password must be at most 140 characters"),
+    messageIdentifier: z.string().min(1, "Message identifier is required").max(140, "Message identifier must be at most 140 characters"),
 });
 
 interface EncryptMessageProps {
@@ -62,7 +62,7 @@ export function EncryptMessage({onFormSubmitSuccess}: EncryptMessageProps) {
                     Encrypt Message
                 </button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[375px]">
                 <DialogHeader>
                     <DialogTitle>Encrypt Message</DialogTitle>
                 </DialogHeader>

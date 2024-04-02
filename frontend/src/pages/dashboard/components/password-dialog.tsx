@@ -22,7 +22,7 @@ interface PasswordDialogProps {
 }
 
 const passwordSchema = z.object({
-    password: z.string().min(6, {message: "Password must be at least 6 characters long"}).max(100, {message: "Password must be at most 100 characters long"}),
+    password: z.string().min(6, {message: "Password must be at least 6 characters long"}).max(140, {message: "Password must be at most 140 characters long"}),
 });
 type PasswordSchema = z.infer<typeof passwordSchema>;
 
