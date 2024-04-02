@@ -1,21 +1,15 @@
 import {Label} from "@/components/ui/label"
 import {Switch} from "@/components/ui/switch"
-import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-export function SwitchDemo() {
-    //on switch example functions
-    const [isToggled, setIsToggled] = useState(false);
-    const navigate = useNavigate(); // Using the useNavigate hook
+export function PageNotFound() {
+    const navigate = useNavigate();
 
-    const handleToggle = (event: {
-        preventDefault: () => void;
-    }) => {
-        setIsToggled(!isToggled);
-        event.preventDefault(); // Prevent the default form submission behavior
-        navigate('/login'); // Navigate to /login
+    const handleToggle = () => {
+        setTimeout(() => {
+            navigate('/login');
+        }, 500);
     };
-
 
     return (
         <div className="h-full flex flex-col items-center space-y-6 mt-[10%]">
