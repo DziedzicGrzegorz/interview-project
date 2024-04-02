@@ -24,12 +24,6 @@ const login = (username: string, password: string) => {
             return response.data;
         });
 };
-
-const logout = () => {
-    return axios.post(API_URL + "logout").then((response) => {
-        return response.data;
-    });
-};
 const privateRoute = () => {
     return axios.get(API_URL + "private").then((response) => {
         return response;
@@ -37,11 +31,9 @@ const privateRoute = () => {
 
 }
 
-
 export const AuthService = {
     register,
     login,
-    logout,
     privateRoute
 }
 

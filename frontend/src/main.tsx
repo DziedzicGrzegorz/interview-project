@@ -4,10 +4,12 @@ import {ModeToggle} from "@/components/mode-toogle.tsx";
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import {LoginPage} from "@/pages/login-page/login-page.tsx";
 import {RequireAuth} from "@/components/auth/RequireAuth.tsx";
-import {Dashboard} from "@/pages/dashboard.tsx";
-import {SwitchDemo} from "@/pages/not-found.tsx";
+import {PageNotFound} from "@/pages/not-found.tsx";
 import {ThemeProvider} from "@/components/theme/theme-provider.tsx";
 import {Toaster} from "@/components/ui/toaster.tsx";
+import {Dashboard} from "@/pages/dashboard/dashboard.tsx";
+import React from 'react';
+import {Logout} from "@/components/logout/logout.tsx";
 
 const router = createBrowserRouter([
     {
@@ -28,26 +30,28 @@ const router = createBrowserRouter([
         element: (
             <RequireAuth>
                 <Dashboard/>
+                <Toaster/>
+                <div className="absolute left-5 top-5">
+                    <Logout/>
+                </div>
             </RequireAuth>
         ),
     },
     {
         path: "*",
-        element: <SwitchDemo/>,
+        element: <PageNotFound/>,
     },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    //@TODO I disabled StrictMode because of useEffect runs twice in dev mode
-    // <React.StrictMode>
-    //   <App />
-    // </React.StrictMode>,
-    <ThemeProvider>
-        <div className="h-full w-full m-0 p-0">
-            <RouterProvider router={router}/>
-            <div className="absolute right-5 top-5">
-                <ModeToggle/>
+    <React.StrictMode>
+        <ThemeProvider>
+            <div className="h-full w-full m-0 p-0">
+                <RouterProvider router={router}/>
+                <div className="absolute right-5 top-5">
+                    <ModeToggle/>
+                </div>
             </div>
-        </div>
-    </ThemeProvider>
+        </ThemeProvider>
+    </React.StrictMode>,
 )
